@@ -1,0 +1,58 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.4.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.4'
+}
+
+sourceSets {
+    integrationTest {
+        java.srcDir file('src/integrationTest/java')
+        resources.srcDir file('src/integrationTest/resources')
+    }
+}
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+check.dependsOn integrationTest
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group 'com.gacha'
+version '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web")
+//	compile("org.springframework.boot:spring-boot-starter-data-jpa")
+
+	compile "org.projectlombok:lombok:1.16.4"
+//	compile 'mysql:mysql-connector-java:5.1.35'
+
+	testCompile "org.springframework:spring-test:4.1.6.RELEASE"
+	testCompile("junit:junit")
+	testCompile 'org.hamcrest:hamcrest-all:1.3'
+}
+
+
+
+
+
