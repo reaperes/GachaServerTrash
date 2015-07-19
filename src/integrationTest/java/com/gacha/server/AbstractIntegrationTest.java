@@ -7,6 +7,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.TestRestTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
+@Transactional
 public abstract class AbstractIntegrationTest {
 	@Value("${local.server.port}")
 	private int port;

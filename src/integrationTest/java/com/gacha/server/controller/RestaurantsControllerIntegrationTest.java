@@ -1,5 +1,7 @@
 package com.gacha.server.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gacha.server.AbstractIntegrationTest;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.Test;
@@ -38,5 +40,32 @@ public class RestaurantsControllerIntegrationTest extends AbstractIntegrationTes
 		assertThat(JsonPath.read(json, "$[0].longitude"), notNullValue());
 		assertThat(JsonPath.read(json, "$[0].name"), notNullValue());
 		assertThat(JsonPath.read(json, "$[0].score"), notNullValue());
+	}
+
+	@Test
+	public void POST_restaurant__should_return_200_OK() throws JsonProcessingException {
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+		headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+
+		RestaurantsController.RestaurantDto dto = new RestaurantsController.RestaurantDto();
+		dto.setLatitude(0);
+		dto.setLongitude(0);
+		dto.setName("test");
+		dto.setScore(100);
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		HttpEntity<?> entity = new HttpEntity<>(objectMapper.writeValueAsString(dto), headers);
+
+		URI uri = UriComponentsBuilder.fromHttpUrl(getServerUrl() + "/restaurants")
+									  .queryParam("latitude", 1d)
+									  .queryParam("longitude", 1d)
+									  .queryParam("radius", 1d)
+									  .build()
+									  .encode()
+									  .toUri();
+
+		ResponseEntity<String> response = restTemplate.exchange(uri, HttpMethod.POST, entity, String.class);
+		assertThat(response.getStatusCode(), is(HttpStatus.OK));
 	}
 }

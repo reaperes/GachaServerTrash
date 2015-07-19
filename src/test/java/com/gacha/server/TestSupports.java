@@ -6,6 +6,21 @@ import com.gacha.server.domain.Restaurant;
  * @author Namhoon
  */
 public class TestSupports {
+	public static Restaurant createRestaurant() {
+		return createRestaurant(null);
+	}
+
+	public static Restaurant createRestaurant(Long id) {
+		Restaurant restaurant = new Restaurant();
+		restaurant.setId(id);
+		restaurant.setLongitude(0);
+		restaurant.setLatitude(0);
+		restaurant.setName("test");
+		restaurant.setScore(50);
+
+		return restaurant;
+	}
+
 	public static RestaurantBuilder restaurantBuilder() {
 		return new RestaurantBuilder();
 	}
